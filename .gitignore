@@ -1,6 +1,53 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,macos,windows
 
+
+# API keys and credentials ( AWS )
+.env
+*.pem
+*.key
+*.crt
+
+# Spring boot
+# Gradle ( related to build cache information etc..)
+.gradle/
+build/
+
+# Ignore Gradle Wrapper files
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
 ### Java ###
 # Compiled class file
 *.class
@@ -36,6 +83,11 @@ replay_pid*
 # Icon must end with two \r
 Icon
 
+# Linux
+*~
+
+# Logs
+logs/
 
 # Thumbnails
 ._*
@@ -56,15 +108,34 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for instrumented libs
+.isolate/
+
+# Generated files
+generated/
+bin/
+
+# Spring Boot specific
+spring.log
+
+# Keystore files
+*.jks
+
+# Swagger auto generated files
+*.swagger-codegen/
+
 ### macOS Patch ###
 # iCloud generated files
 *.icloud
 
 ### Windows ###
 # Windows thumbnail cache files
-Thumbs.db
 Thumbs.db:encryptable
-ehthumbs.db
 ehthumbs_vista.db
 
 # Dump file
@@ -72,9 +143,6 @@ ehthumbs_vista.db
 
 # Folder config file
 [Dd]esktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
 
 # Windows Installer files
 *.cab

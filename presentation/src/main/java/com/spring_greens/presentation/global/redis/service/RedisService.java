@@ -1,32 +1,43 @@
 package com.spring_greens.presentation.global.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.spring_greens.presentation.global.converter.RedisResponseConverter;
-import com.spring_greens.presentation.global.redis.manager.RedisTemplateManager;
-import com.spring_greens.presentation.global.redis.entity.RedisProduct;
+import com.spring_greens.presentation.global.exception.CommonException;
+import com.spring_greens.presentation.global.redis.converter.ifs.RedisProductResponseConverter;
+import com.spring_greens.presentation.global.redis.common.RedisProduct;
+import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
+import com.spring_greens.presentation.global.redis.exception.RedisException;
+import com.spring_greens.presentation.global.redis.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RedisService {
-    private final RedisTemplateManager redisTemplateManager;
-    private final RedisResponseConverter<?> redisResponseConverter;
+    private final RedisRepository redisTemplateManager;
+    private final RedisProductResponseConverter redisResponseConverter;
+
 
     public RedisProduct<?> getProductsFromRedisUsingKey(final String domain, final String mallName)  {
         try {
-            RedisProduct<?> redisProduct = redisTemplateManager
-                    .getProductsByMallName(mallName).orElseThrow(() -> new RuntimeException("No products found"));
-            return redisResponseConverter.convertResponse(domain, redisProduct);
+            RedisProductJsonDeserializer redisProductJsonDeserializer = redisTemplateManager
+                    .getProductsByMallName(mallName);
+
+            return redisResponseConverter.convertResponse(domain, redisProductJsonDeserializer);
         } catch (NullPointerException e) {
-            throw new RuntimeException("null");
+            throw new CommonException.CustomNullPointerException("Error data is null");
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("processing");
+            throw new RedisException.RedisJsonProcessingException("Error processing JSON data");
         }
     }
 
-    public boolean saveProduct(String mallName, RedisProduct<?> redisProduct) throws JsonProcessingException {
-        redisTemplateManager.saveProductByMallName(mallName, redisProduct);
+    public boolean saveProductsToRedis(String mallName, RedisProduct<?> redisProduct) throws JsonProcessingException {
+        redisTemplateManager.saveProductsByMallName(mallName, redisProduct);
         return true;
+    }
+
+    public void increaseProductViewCount() {
+        redisTemplateManager.increaseProductViewCountByShopIdAndProductId();
     }
 }

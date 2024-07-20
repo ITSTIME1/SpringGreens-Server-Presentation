@@ -1,4 +1,4 @@
-package com.spring_greens.presentation.global.config.spring;
+package com.spring_greens.presentation.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

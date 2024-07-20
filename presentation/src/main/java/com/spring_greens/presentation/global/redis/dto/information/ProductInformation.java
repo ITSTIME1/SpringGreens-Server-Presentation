@@ -1,12 +1,10 @@
 package com.spring_greens.presentation.global.redis.dto.information;
-
-
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
-public class ProductInformation {
+public abstract class ProductInformation {
     private Long product_id;
     private String product_name;
     private int product_view_count;
@@ -15,4 +13,5 @@ public class ProductInformation {
     private int product_price;
     private String major_category;
     private String sub_category;
+    public ProductInformation(){}
 }

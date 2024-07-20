@@ -1,7 +1,9 @@
-package com.spring_greens.presentation.global.converter;
+package com.spring_greens.presentation.global.redis.converter;
 
+import com.spring_greens.presentation.global.redis.converter.ifs.RedisProductResponseConverter;
+import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
 import com.spring_greens.presentation.global.redis.dto.response.MapRedisProductResponse;
-import com.spring_greens.presentation.global.redis.entity.RedisProduct;
+import com.spring_greens.presentation.global.redis.common.RedisProduct;
 import com.spring_greens.presentation.global.redis.dto.information.MapProductInformation;
 import com.spring_greens.presentation.global.redis.dto.information.MapShopInformation;
 import org.springframework.stereotype.Component;
@@ -10,16 +12,17 @@ import java.util.List;
 
 
 /**
- * This class is factory class for related to product.
+ * Implementation of RedisProductResponseConverter. <br>
+ * this performs convert method and return RedisProduct type. <br>
  *
  * @author itsitme0809
  */
 @Component
-public class RedisResponseConverter<T> {
+public class RedisProductResponseConverterImpl implements RedisProductResponseConverter {
     // 타입에 따라 다르게 만들어 반환을 해주어야 겠지
-    public RedisProduct<?> convertResponse(String domain, RedisProduct<?> response){
+    @Override
+    public RedisProduct<?> convertResponse(String domain, RedisProductJsonDeserializer response){
         if(domain.equals("map")) {
-            // 1. 새로운 데이터를 추출해서 만들어주면 되겠네
             MapProductInformation mapProductInformation = MapProductInformation
                     .builder()
                     .product_name("상품_1")
@@ -41,6 +44,6 @@ public class RedisResponseConverter<T> {
                     .shop_list(List.of(mapShopInformation))
                     .build();
         }
-        return response;
+        return null;
     }
 }

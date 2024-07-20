@@ -74,7 +74,6 @@ class MapControllerTest {
         // given
         // custom response stub object
         ApiResponse<MapRedisProductResponse> successProductApiResponse = ApiResponse.ok(mapProductResponse);
-        given(mapController.handleGetProductsOfMall(domain, mallName)).willAnswer(invocationOnMock -> successProductApiResponse);
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -93,8 +92,7 @@ class MapControllerTest {
         // given
         // custom response stub object
         ApiResponse<MapRedisProductResponse> failProductApiResponse = ApiResponse.fail(mapProductResponse);
-
-        given(mapController.handleGetProductsOfMall(domain, mallName)).willAnswer(invocationOnMock -> failProductApiResponse);
+        
 
         // when
         ResultActions resultActions = mockMvc.perform(

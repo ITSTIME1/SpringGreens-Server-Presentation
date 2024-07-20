@@ -6,8 +6,4 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
-public class MainProductInformation extends ProductInformation {
-    private String unit;
-    private String major_category;
-    private String sub_category;
-}
+public class MainProductInformation extends ProductInformation {}

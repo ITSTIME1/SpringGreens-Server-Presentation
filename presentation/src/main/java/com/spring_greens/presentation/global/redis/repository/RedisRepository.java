@@ -1,12 +1,12 @@
 package com.spring_greens.presentation.global.redis.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.spring_greens.presentation.global.redis.entity.RedisProduct;
-
-import java.util.Optional;
+import com.spring_greens.presentation.global.redis.common.RedisProduct;
+import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
 
 public interface RedisRepository {
-    Optional<? extends RedisProduct<?>> getProductsByMallName(final String mallName) throws JsonProcessingException;
-//    boolean incrementViewCount();
+    RedisProductJsonDeserializer getProductsByMallName(final String mallName) throws JsonProcessingException;
 
-    boolean saveProductByMallName(final String mallName, final RedisProduct<?> redisProductRequest) throws JsonProcessingException;
+    boolean saveProductsByMallName(final String mallName, final RedisProduct<?> redisProductRequest) throws JsonProcessingException;
+
+    void increaseProductViewCountByShopIdAndProductId();
 }

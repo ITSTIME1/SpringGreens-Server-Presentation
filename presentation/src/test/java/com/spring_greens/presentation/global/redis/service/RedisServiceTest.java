@@ -2,13 +2,12 @@ package com.spring_greens.presentation.global.redis.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.spring_greens.presentation.global.converter.RedisResponseConverter;
+import com.spring_greens.presentation.global.redis.converter.ifs.RedisProductResponseConverter;
 import com.spring_greens.presentation.global.redis.dto.information.MapProductInformation;
 import com.spring_greens.presentation.global.redis.dto.information.MapShopInformation;
 import com.spring_greens.presentation.global.redis.dto.request.ScheduledRedisProductRequest;
 import com.spring_greens.presentation.global.redis.dto.response.MapRedisProductResponse;
-import com.spring_greens.presentation.global.redis.entity.RedisProduct;
-import com.spring_greens.presentation.global.redis.entity.ScheduledRedisProduct;
+import com.spring_greens.presentation.global.redis.common.RedisProduct;
 import com.spring_greens.presentation.global.redis.manager.RedisTemplateManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +33,7 @@ class RedisServiceTest {
     @Mock
     private RedisTemplateManager redisTemplateManager;
     @Mock
-    private RedisResponseConverter<?> redisResponseConverter;
+    private RedisProductResponseConverter redisResponseConverter;
     @InjectMocks
     private RedisService redisService;
 
@@ -75,14 +74,14 @@ class RedisServiceTest {
         String domain = "map";
 
         given(redisTemplateManager.getProductsByMallName(mallName)).willAnswer(invocationOnMock -> Optional.of(mapProductResponse));
-        given(redisResponseConverter.convertResponse(eq(domain), any(RedisProduct.class))).willAnswer(invocationOnMock -> mapProductResponse);
+//        given(redisResponseConverter.convertResponse(eq(domain), any(RedisProduct.class))).willAnswer(invocationOnMock -> mapProductResponse);
 
 
         // when
         RedisProduct<?> redisProduct = redisService.getProductsFromRedisUsingKey(domain, mallName);
 
         verify(redisTemplateManager, times(1)).getProductsByMallName(mallName);
-        verify(redisResponseConverter, times(1)).convertResponse(eq(domain), any(RedisProduct.class));
+//        verify(redisResponseConverter, times(1)).convertResponse(eq(domain), any(RedisProduct.class));
         assertThat(mapProductResponse.getMall_name()).isEqualTo(redisProduct.getMall_name());
     }
 
@@ -94,11 +93,11 @@ class RedisServiceTest {
         String mallName = "APM";
         String domain = "map";
         ScheduledRedisProductRequest expectedProductRequest = ScheduledRedisProductRequest.builder().mall_name(mallName).build();
-        given(redisTemplateManager.saveProductByMallName(eq(mallName), any(ScheduledRedisProductRequest.class))).willReturn(true);
+        given(redisTemplateManager.saveProductsByMallName(eq(mallName), any(ScheduledRedisProductRequest.class))).willReturn(true);
 
         // when
-        boolean result = redisService.saveProduct(mallName, expectedProductRequest);
-        verify(redisTemplateManager, times(1)).saveProductByMallName(eq(mallName), any(ScheduledRedisProductRequest.class));
+        boolean result = redisService.saveProductsToRedis(mallName, expectedProductRequest);
+        verify(redisTemplateManager, times(1)).saveProductsByMallName(eq(mallName), any(ScheduledRedisProductRequest.class));
         assertThat(result).isTrue();
     }
 

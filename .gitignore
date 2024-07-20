@@ -13,6 +13,9 @@
 .gradle/
 build/
 
+# test file ignore
+test/
+
 # Ignore Gradle Wrapper files
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties

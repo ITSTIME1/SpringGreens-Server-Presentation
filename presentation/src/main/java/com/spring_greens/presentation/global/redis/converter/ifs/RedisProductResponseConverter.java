@@ -1,7 +1,6 @@
 package com.spring_greens.presentation.global.redis.converter.ifs;
 
 import com.spring_greens.presentation.global.redis.common.RedisProduct;
-import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
 
 /**
  * This interface converts RedisProduct type to MainRedisProductResponse and MapRedisProductResponse. <br>
@@ -12,5 +11,5 @@ import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJ
  * @author itstime0809
  */
 public interface RedisProductResponseConverter {
-    RedisProduct<?> convertResponse(String domain, RedisProductJsonDeserializer response);
+    RedisProduct<?> convertResponse(String domain, RedisProduct<?> response);
 }

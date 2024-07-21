@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.spring_greens.presentation.global.exception.CommonException;
 import com.spring_greens.presentation.global.redis.converter.ifs.RedisProductResponseConverter;
 import com.spring_greens.presentation.global.redis.common.RedisProduct;
-import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
+import com.spring_greens.presentation.global.redis.dto.request.RedisProductRequest;
 import com.spring_greens.presentation.global.redis.exception.RedisException;
 import com.spring_greens.presentation.global.redis.repository.RedisRepository;
+import com.spring_greens.presentation.global.redis.validation.ifs.RedisValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,27 +18,30 @@ import org.springframework.stereotype.Service;
 public class RedisService {
     private final RedisRepository redisTemplateManager;
     private final RedisProductResponseConverter redisResponseConverter;
+    private final RedisValidator redisValidator;
 
 
-    public RedisProduct<?> getProductsFromRedisUsingKey(final String domain, final String mallName)  {
+    public RedisProduct<?> getProductsFromRedisUsingKey(RedisProductRequest redisProductRequest)  {
         try {
-            RedisProductJsonDeserializer redisProductJsonDeserializer = redisTemplateManager
-                    .getProductsByMallName(mallName);
+            RedisProduct<?> redisProductJsonDeserializer = null;
+            // 1. 파라미터 검증
+            if(validateRedisProductRequestParameter(redisProductRequest)) {
+                // 2. 상품 가져오기
+                redisProductJsonDeserializer = redisTemplateManager
+                        .getProductsByMallName(redisProductRequest.getMallName());
+            };
+            // 3. 상품 반환
+            return redisResponseConverter.convertResponse(redisProductRequest.getDomain(), redisProductJsonDeserializer);
 
-            return redisResponseConverter.convertResponse(domain, redisProductJsonDeserializer);
         } catch (NullPointerException e) {
-            throw new CommonException.CustomNullPointerException("Error data is null");
+            throw new CommonException.CustomNullPointerException(e.getMessage());
         } catch (JsonProcessingException e) {
-            throw new RedisException.RedisJsonProcessingException("Error processing JSON data");
+            throw new RedisException.RedisJsonProcessingException(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new RedisException.RedisIllegalArgumentException(e.getMessage());
         }
     }
-
-    public boolean saveProductsToRedis(String mallName, RedisProduct<?> redisProduct) throws JsonProcessingException {
-        redisTemplateManager.saveProductsByMallName(mallName, redisProduct);
-        return true;
-    }
-
-    public void increaseProductViewCount() {
-        redisTemplateManager.increaseProductViewCountByShopIdAndProductId();
+    public boolean validateRedisProductRequestParameter(RedisProductRequest redisProductRequest) throws IllegalArgumentException{
+        return redisValidator.validate(redisProductRequest);
     }
 }

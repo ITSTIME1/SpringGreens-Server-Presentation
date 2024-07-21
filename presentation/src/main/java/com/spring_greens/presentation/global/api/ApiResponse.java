@@ -1,5 +1,6 @@
 package com.spring_greens.presentation.global.api;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

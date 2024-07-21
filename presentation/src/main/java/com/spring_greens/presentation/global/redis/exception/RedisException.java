@@ -8,8 +8,11 @@ public class RedisException extends RuntimeException{
         public RedisJsonProcessingException(String message) {
             super(message);
         }
-        public RedisJsonProcessingException() {
-            this("Error parsing json data");
+    }
+
+    public static class RedisIOException extends RedisException {
+        public RedisIOException(String message) {
+            super(message);
         }
     }
 }

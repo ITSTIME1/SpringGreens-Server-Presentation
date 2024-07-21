@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.spring_greens.presentation.global.exception.CommonException;
 import com.spring_greens.presentation.global.redis.converter.ifs.RedisProductResponseConverter;
 import com.spring_greens.presentation.global.redis.common.RedisProduct;
-import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
+import com.spring_greens.presentation.global.redis.deserializer.deserialized.DeserializedRedisProduct;
 import com.spring_greens.presentation.global.redis.exception.RedisException;
 import com.spring_greens.presentation.global.redis.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -21,14 +23,14 @@ public class RedisService {
 
     public RedisProduct<?> getProductsFromRedisUsingKey(final String domain, final String mallName)  {
         try {
-            RedisProductJsonDeserializer redisProductJsonDeserializer = redisTemplateManager
+            RedisProduct<?> redisProductJsonDeserializer = redisTemplateManager
                     .getProductsByMallName(mallName);
 
             return redisResponseConverter.convertResponse(domain, redisProductJsonDeserializer);
         } catch (NullPointerException e) {
-            throw new CommonException.CustomNullPointerException("Error data is null");
+            throw new CommonException.CustomNullPointerException(e.getMessage());
         } catch (JsonProcessingException e) {
-            throw new RedisException.RedisJsonProcessingException("Error processing JSON data");
+            throw new RedisException.RedisJsonProcessingException(e.getMessage());
         }
     }
 

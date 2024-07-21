@@ -2,7 +2,7 @@ package com.spring_greens.presentation.global.redis.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring_greens.presentation.global.redis.dto.deserialize.RedisProductJsonDeserializer;
+import com.spring_greens.presentation.global.redis.deserializer.deserialized.DeserializedRedisProduct;
 import com.spring_greens.presentation.global.redis.repository.RedisRepository;
 import com.spring_greens.presentation.global.redis.common.RedisProduct;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +25,12 @@ public class RedisTemplateManager implements RedisRepository {
     private final ObjectMapper objectMapper;
 
     @Override
-    public RedisProductJsonDeserializer getProductsByMallName(final String mallName) throws JsonProcessingException {
+    public RedisProduct<?> getProductsByMallName(final String mallName) throws JsonProcessingException {
         final Object serializedProducts = redisJsonTemplate.opsForValue().get(mallName);
         if(serializedProducts == null) {
             throw new NullPointerException();
         }
-        return objectMapper.readValue(serializedProducts.toString(), RedisProductJsonDeserializer.class);
+        return objectMapper.readValue(serializedProducts.toString(), RedisProduct.class);
     }
 
     @Override

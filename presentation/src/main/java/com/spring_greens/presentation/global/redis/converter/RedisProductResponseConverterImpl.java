@@ -1,5 +1,6 @@
 package com.spring_greens.presentation.global.redis.converter;
 
+import com.spring_greens.presentation.global.enums.Domain;
 import com.spring_greens.presentation.global.redis.converter.ifs.RedisProductResponseConverter;
 import com.spring_greens.presentation.global.redis.deserializer.deserialized.DeserializedRedisProductInformation;
 import com.spring_greens.presentation.global.redis.deserializer.deserialized.DeserializedRedisShopInformation;
@@ -9,6 +10,7 @@ import com.spring_greens.presentation.global.redis.dto.response.MapRedisProductR
 import com.spring_greens.presentation.global.redis.common.RedisProduct;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -22,22 +24,24 @@ import java.util.stream.Collectors;
 public class RedisProductResponseConverterImpl implements RedisProductResponseConverter {
     @Override
     public RedisProduct<?> convertResponse(String domain, RedisProduct<?> response){
-        if(domain.equals("map")) {
+        if(domain.equals(Domain.MAP.getDomain())) {
+            List<MapShopInformation> mapShopInformationList = response.getShop_list().stream()
+                    .map(shopInfo -> MapShopInformation.builder()
+                            .shop_name(shopInfo.getShop_name())
+                            .shop_contact(shopInfo.getShop_contact())
+                            .shop_address_details(shopInfo.getShop_address_details())
+                            .product(shopInfo.getProduct().stream().map(
+                                    productInfo -> MapProductInformation.builder()
+                                            .product_name(productInfo.getProduct_name())
+                                            .product_view_count(productInfo.getProduct_view_count())
+                                            .product_image_url(productInfo.getProduct_image_url())
+                                            .build()).collect(Collectors.toList()))
+                            .build()).collect(Collectors.toList());
+
+
             return MapRedisProductResponse.builder()
                     .mall_name(response.getMall_name())
-                    .shop_list(response.getShop_list().stream()
-                            .map(shopInfo -> MapShopInformation.builder()
-                                    .shop_name(shopInfo.getShop_name())
-                                    .shop_contact(shopInfo.getShop_contact())
-                                    .shop_address_details(shopInfo.getShop_address_details())
-                                    .product(shopInfo.getProduct().stream()
-                                            .map(productInfo -> MapProductInformation.builder()
-                                                    .product_view_count(productInfo.getProduct_view_count())
-                                                    .product_name(productInfo.getProduct_name())
-                                                    .product_image_url(productInfo.getProduct_image_url())
-                                                    .build()).collect(Collectors.toList()))
-                                    .build())
-                            .collect(Collectors.toList()))
+                    .shop_list(mapShopInformationList)
                     .build();
         }
         return null;

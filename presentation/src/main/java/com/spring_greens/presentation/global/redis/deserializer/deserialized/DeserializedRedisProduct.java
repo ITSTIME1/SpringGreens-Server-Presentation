@@ -7,8 +7,4 @@ import java.util.List;
 
 @SuperBuilder
 @Getter
-public class DeserializedRedisProduct extends RedisProduct<DeserializedRedisShopInformation>  {
-    private Long mall_id;
-    private String mall_name;
-    private List<DeserializedRedisShopInformation> shop_list;
-}
+public class DeserializedRedisProduct extends RedisProduct<DeserializedRedisShopInformation> {}

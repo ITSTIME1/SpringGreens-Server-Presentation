@@ -5,7 +5,6 @@ import com.spring_greens.presentation.global.redis.deserializer.RedisProductJson
 import com.spring_greens.presentation.global.redis.dto.information.ProductInformation;
 import com.spring_greens.presentation.global.redis.dto.information.ShopInformation;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;

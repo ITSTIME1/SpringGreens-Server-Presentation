@@ -14,7 +14,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RedisProductInformationJsonDeserializer extends JsonDeserializer<DeserializedRedisProductInformation> {
     private final ObjectMapper objectMapper;
-
     @Override
     public DeserializedRedisProductInformation deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode jsonNode = objectMapper.readTree(jsonParser);

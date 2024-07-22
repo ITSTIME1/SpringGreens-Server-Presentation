@@ -3,6 +3,7 @@ package com.spring_greens.presentation.global.redis.manager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring_greens.presentation.global.redis.deserializer.deserialized.DeserializedRedisProduct;
+import com.spring_greens.presentation.global.redis.dto.information.ProductInformation;
 import com.spring_greens.presentation.global.redis.repository.RedisRepository;
 import com.spring_greens.presentation.global.redis.common.RedisProduct;
 import lombok.RequiredArgsConstructor;

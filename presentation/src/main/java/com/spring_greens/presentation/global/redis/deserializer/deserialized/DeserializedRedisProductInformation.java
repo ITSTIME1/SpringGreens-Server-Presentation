@@ -7,5 +7,4 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
-public class DeserializedRedisProductInformation extends ProductInformation {
-}
+public class DeserializedRedisProductInformation extends ProductInformation {}

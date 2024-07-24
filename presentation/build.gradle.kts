@@ -25,8 +25,6 @@ dependencies {
 	implementation("com.mysql:mysql-connector-j:8.3.0") // mariadb connector
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive") // redis
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.0") // jpa
-//	implementation("org.springframework.boot:spring-boot-starter-security") // security 6.3.1
-//	testImplementation("org.springframework.security:spring-security-test")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -36,10 +34,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-//	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") // Oauth2
 	implementation("org.springframework.boot:spring-boot-starter-logging")
-	implementation("com.fasterxml.jackson.core:jackson-databind") // jackson
-	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1") // jackson dataType converter
 	testImplementation("org.mockito:mockito-junit-jupiter")
 }
 

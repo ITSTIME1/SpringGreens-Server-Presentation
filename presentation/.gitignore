@@ -156,8 +156,4 @@ ehthumbs_vista.db
 
 # Windows shortcuts
 *.lnk
-
-# spring
-application.properties
-
 # End of https://www.toptal.com/developers/gitignore/api/java,macos,windows

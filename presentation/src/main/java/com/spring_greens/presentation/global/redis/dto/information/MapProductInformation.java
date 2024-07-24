@@ -8,5 +8,4 @@ import lombok.extern.jackson.Jacksonized;
 @SuperBuilder
 @Getter
 public class MapProductInformation extends ProductInformation {
-    public MapProductInformation() {super();}
 }

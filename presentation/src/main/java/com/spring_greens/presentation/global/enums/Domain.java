@@ -8,7 +8,7 @@ public enum Domain {
     MAIN("main");
     private final String domain;
 
-    private Domain(String domain) {
+    Domain(String domain) {
         this.domain = domain;
     }
 }

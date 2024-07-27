@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum Mall {
-    APM(1L, "APM");
-    private final Long mallId;
+    APM( "apm"),
+    DONGPYEONGHWA("동평화시장"),
+    CHEONGPYEONGHWA("청평화시장");
     private final String mallName;
-    private Mall(Long mallId, String mallName) {
-        this.mallId = mallId;
+    Mall(String mallName) {
         this.mallName = mallName;
     }
 }

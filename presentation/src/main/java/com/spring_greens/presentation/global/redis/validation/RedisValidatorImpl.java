@@ -2,7 +2,7 @@ package com.spring_greens.presentation.global.redis.validation;
 
 import com.spring_greens.presentation.global.enums.Domain;
 import com.spring_greens.presentation.global.enums.Mall;
-import com.spring_greens.presentation.global.redis.dto.request.RedisProductRequest;
+import com.spring_greens.presentation.product.dto.redis.request.RedisProductRequest;
 import com.spring_greens.presentation.global.redis.validation.ifs.RedisValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

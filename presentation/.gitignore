@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,macos,windows
 
+# static
+/src/main/resources/static/*
 
 # API keys and credentials ( AWS )
 .env

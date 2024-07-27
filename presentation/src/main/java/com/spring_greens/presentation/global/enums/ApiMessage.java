@@ -11,7 +11,7 @@ public enum ApiMessage {
     private final HttpStatus status;
     private final String responseMessage;
 
-    private ApiMessage(HttpStatus httpStatus, String responseMessage) {
+    ApiMessage(HttpStatus httpStatus, String responseMessage) {
         this.status = httpStatus;
         this.responseMessage = responseMessage;
     }

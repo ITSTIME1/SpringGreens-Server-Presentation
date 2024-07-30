@@ -1,10 +1,8 @@
 package com.spring_greens.presentation.global.api;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import com.spring_greens.presentation.global.enums.ApiMessage;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 
 /**
@@ -29,17 +27,23 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> ok(@Nullable final T data) {
-        return new ApiResponse<>(ApiMessage.SUCCESS.getStatus().value(), ApiMessage.FAIL.getResponseMessage(), data);
+        return new ApiResponse<>(ApiMessage.SUCCESS.getStatus().value(),
+                ApiMessage.SUCCESS.getResponseMessage(),
+                data);
     }
 
     public static <T> ApiResponse<T> fail(@Nullable final T data) {
-        return new ApiResponse<>(ApiMessage.FAIL.getStatus().value(), ApiMessage.FAIL.getResponseMessage(), data);
+        return new ApiResponse<>(ApiMessage.FAIL.getStatus().value(),
+                ApiMessage.FAIL.getResponseMessage(),
+                data);
     }
     public static <T> ApiResponse<T> fail(@Nullable String message, @Nullable final T data) {
         if(message == null || message.isEmpty()) {
             message = ApiMessage.FAIL.getResponseMessage();
         }
-        return new ApiResponse<>(ApiMessage.FAIL.getStatus().value(), message, data);
+        return new ApiResponse<>(ApiMessage.FAIL.getStatus().value(),
+                message,
+                data);
     }
 
 }

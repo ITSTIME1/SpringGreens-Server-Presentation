@@ -2,6 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,macos,windows
 
 
+resources/
+
 # API keys and credentials ( AWS )
 .env
 *.pem

@@ -1,10 +1,7 @@
 package com.spring_greens.presentation.map.controller;
-import com.spring_greens.presentation.global.redis.common.RedisProduct;
-import com.spring_greens.presentation.global.redis.dto.information.MapProductInformation;
-import com.spring_greens.presentation.global.redis.dto.information.MapShopInformation;
-import com.spring_greens.presentation.global.redis.dto.information.ProductInformation;
-import com.spring_greens.presentation.global.redis.dto.information.ShopInformation;
-import com.spring_greens.presentation.global.redis.dto.response.MapRedisProductResponse;
+
+import com.spring_greens.presentation.product.dto.redis.RedisProduct;
+import com.spring_greens.presentation.product.dto.redis.response.MapRedisProductResponse;
 import com.spring_greens.presentation.global.redis.service.RedisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,12 +31,11 @@ class MapControllerTest {
 
         RedisProduct<?> expectedResponse = MapRedisProductResponse.builder().mall_name("APM").build();
         // when
-        doReturn(expectedResponse).when(redisService).getProductsFromRedisUsingKey(domain,mallName);
+//        doReturn(expectedResponse).when(redisService).getProductsFromRedisUsingKey(domain, mallName);
 
         // then
         mockMvc.perform(MockMvcRequestBuilders.get(endPoint, domain, mallName))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.mall_name").value(mallName));
     }
-
 }

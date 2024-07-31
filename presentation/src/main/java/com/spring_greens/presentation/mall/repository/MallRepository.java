@@ -15,7 +15,7 @@ public interface MallRepository extends CrudRepository<Mall, Long> {
      * This repository used Projection so Coordinate interface that contains latitude, longitude attributes.
      * @return
      */
-    @Query(value = "select name from Mall", nativeQuery = true)
+    @Query(value = "select name from Mall where id != 1", nativeQuery = true)
     List<String> findAllMallName();
 
     @Query(value = "select m.latitude as latitude, " +

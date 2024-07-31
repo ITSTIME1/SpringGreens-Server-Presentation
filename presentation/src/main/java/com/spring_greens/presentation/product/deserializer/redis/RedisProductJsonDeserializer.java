@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring_greens.presentation.product.converter.ifs.RedisConverter;
+import com.spring_greens.presentation.global.redis.converter.ifs.RedisConverter;
+import com.spring_greens.presentation.global.redis.exception.RedisException;
 import com.spring_greens.presentation.product.dto.redis.DeserializedRedisProduct;
 import com.spring_greens.presentation.product.dto.redis.deserialized.DeserializedRedisShopInformation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,27 +33,34 @@ import java.util.stream.StreamSupport;
  * @author itstime0809
  */
 
+@Slf4j
 @RequiredArgsConstructor
 public class RedisProductJsonDeserializer extends JsonDeserializer<DeserializedRedisProduct> {
     private final ObjectMapper objectMapper;
     private final RedisConverter redisConverter;
     @Override
-    public DeserializedRedisProduct deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public DeserializedRedisProduct deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonParser);
+            List<DeserializedRedisShopInformation> deserializedRedisShopInformationList = StreamSupport.stream(jsonNode.get("shop_list").spliterator(), false)
+                    .map(shopNode -> {
+                        try {
 
-        JsonNode jsonNode = objectMapper.readTree(jsonParser);
-        List<DeserializedRedisShopInformation> deserializedRedisShopInformationList = StreamSupport.stream(jsonNode.get("shop_list").spliterator(), false)
-                .map(shopNode -> {
+                            return objectMapper.readValue(shopNode.traverse(), DeserializedRedisShopInformation.class);
+                        } catch (IOException e) {
+                            log.error("Error deserializing shopNode: {}", e.getMessage(), e);
+                            throw new RedisException.RedisIOException(e.getMessage());
+                        }
 
-                    try {
-                        return objectMapper.readValue(shopNode.traverse(), DeserializedRedisShopInformation.class);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    })
+                    .toList();
 
-                })
-                .toList();
 
-        return redisConverter.convertDeserializedRedisProduct(jsonNode, deserializedRedisShopInformationList);
+            return redisConverter.convertDeserializedRedisProduct(jsonNode, deserializedRedisShopInformationList);
+        } catch (IOException e) {
+            log.error("Error deserializing JSON: {}", e.getMessage(), e);
+            throw new RedisException.RedisIOException(e.getMessage());
+        }
     }
 }
 

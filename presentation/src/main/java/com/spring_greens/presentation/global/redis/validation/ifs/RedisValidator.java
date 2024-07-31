@@ -8,7 +8,7 @@ import com.spring_greens.presentation.global.validation.ValidationOperation;
  *
  */
 public abstract class RedisValidator implements ValidationOperation {
-    public abstract boolean isNull (String...parameters);
-    public abstract boolean containsDomain(String param);
-    public abstract boolean containsMall(String param);
+    protected abstract boolean isNull (String...parameters);
+    protected abstract boolean containsDomain(String param);
+    protected abstract boolean containsMall(String param);
 }

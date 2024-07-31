@@ -8,7 +8,7 @@ import com.spring_greens.presentation.product.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * TemplateManager contains RedisTemplate for Json, Hash. <br>
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
  * @author itstime0809
  */
 @Slf4j
-@Component
+@Repository
 @RequiredArgsConstructor
-public class RedisTemplateManager implements RedisRepository {
+public class RedisRepositoryImpl implements RedisRepository {
 
     private final RedisTemplate<String, Object> redisJsonTemplate;
     private final ObjectMapper objectMapper;

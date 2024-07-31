@@ -1,10 +1,10 @@
 package com.spring_greens.presentation.global.controller;
 
 import com.spring_greens.presentation.global.api.ApiResponse;
-import com.spring_greens.presentation.global.redis.service.RedisService;
-import com.spring_greens.presentation.mall.service.ifs.MallService;
+import com.spring_greens.presentation.global.factory.converter.ifs.ConverterFactory;
+import com.spring_greens.presentation.global.factory.service.ifs.ServiceFactory;
 import com.spring_greens.presentation.product.dto.redis.request.RedisProductRequest;
-import com.spring_greens.presentation.product.dto.redis.response.RedisProductResponse;
+import com.spring_greens.presentation.product.dto.redis.response.ifs.RedisProductResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,15 +28,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractBaseController {
-    protected final MallService mallService;
-    protected final RedisService redisService;
+    protected final ConverterFactory converterFactory;
+    protected final ServiceFactory serviceFactory;
 
     @GetMapping("/get/products/{domain}/{mall_name}")
     @Operation(summary="상품 호출하기 메인")
     protected ApiResponse<RedisProductResponse> getProductsOfMall(@PathVariable("domain") String domain,
                                                                     @PathVariable("mall_name") String mallName) {
-        RedisProductRequest redisProductRequest = RedisProductRequest.builder().domain(domain).mallName(mallName).build();
-        RedisProductResponse product = redisService.getProductsFromRedisUsingKey(redisProductRequest);
+
+        RedisProductRequest redisProductRequest = converterFactory.getRedisConverter().createRequest(domain, mallName);
+        RedisProductResponse product = serviceFactory.getRedisService().getProductsFromRedisUsingKey(redisProductRequest);
         return ApiResponse.ok(product);
     }
 }
+
+
+

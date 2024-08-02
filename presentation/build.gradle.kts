@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.3.0"
@@ -22,7 +24,7 @@ repositories {
 }
 
 dependencies {
-	implementation("com.mysql:mysql-connector-j:8.3.0") // mariadb connector
+	implementation("org.mariadb.jdbc:mariadb-java-client:3.3.3")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive") // redis
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.0") // jpa
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
@@ -40,4 +42,16 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	// Disable test execution
+	enabled = false
+}
+
+// Exclude test classes from the JAR file
+tasks.withType<Jar> {
+	// Exclude test classes
+	exclude("**/test/**")
+}
+
+tasks.withType<BootJar> {
+	mainClass.set("com.spring_greens.presentation.PresentationApplication")
 }

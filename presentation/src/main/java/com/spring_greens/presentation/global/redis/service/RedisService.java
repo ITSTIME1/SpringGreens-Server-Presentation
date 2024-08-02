@@ -2,9 +2,9 @@ package com.spring_greens.presentation.global.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.spring_greens.presentation.global.exception.CommonException;
+import com.spring_greens.presentation.global.factory.converter.ifs.ConverterFactory;
 import com.spring_greens.presentation.global.redis.exception.RedisException;
 import com.spring_greens.presentation.global.redis.validation.ifs.RedisValidator;
-import com.spring_greens.presentation.global.redis.converter.ifs.RedisConverter;
 import com.spring_greens.presentation.product.dto.redis.DeserializedRedisProduct;
 import com.spring_greens.presentation.product.dto.redis.deserialized.DeserializedRedisProductInformation;
 import com.spring_greens.presentation.product.dto.redis.deserialized.DeserializedRedisShopInformation;
@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RedisService {
     private final RedisRepository redisRepository;
-    private final RedisConverter redisConverter;
+    private final ConverterFactory converterFactory;
+//    private final RedisConverter redisConverter;
     private final RedisValidator redisValidator;
 
     /**
@@ -56,7 +57,7 @@ public class RedisService {
     }
 
     private RedisProductResponse convertToResponse(String domain, DeserializedRedisProduct redisProductJsonDeserializer) {
-        return redisConverter.createResponse(domain, redisProductJsonDeserializer);
+        return converterFactory.getRedisConverter().createResponse(domain, redisProductJsonDeserializer);
     }
 
     private DeserializedRedisProduct getProduct(String mallName) throws JsonProcessingException {

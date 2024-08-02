@@ -1,0 +1,65 @@
+version: '3.8'
+
+# Defined web container service
+services:
+
+  # create container for nginx
+  nginx:
+    # image tag perform defined name and tag if local build file. or not pull specific file docker registry or hub.
+    image: nginx:latest
+    ports:
+      - "80:80"
+    networks:
+      - presentation-network
+
+
+
+  # create container for spring boot
+  web:
+    # need to docker file to build image
+    # make build context
+    build:
+      # context means that where dockerfile is located.
+      # context : . means current directory.
+      # dockerfile : Docker file located on current directory(docker)
+      context: .
+      dockerfile: Dockerfile
+
+    # Defined image name and tag
+    image: itstime0809/spring_greens_presentation:latest
+    # Defined spring boot ports
+    ports:
+      - "9090:8080"
+    # Defined environment profile for dev environment.
+    env_file:
+      # Defined ec2 instance presentation.env file path
+      - /home/ec2-user/presentation.env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+
+    # order execute services
+    depends_on:
+      - redis
+
+    # Defined custom network
+    # Available connect between container
+    networks:
+      - presentation-network
+
+
+  # create container for redis
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - presentation-network
+    volumes:
+      - /home/ec2-user/redis.conf:/usr/local/etc/redis/redis.conf
+
+# Setting presentation custom network
+# driver : bridge docker base network
+# docker can connect each docker container to virtual bridge network.
+networks:
+  presentation-network:
+    driver: bridge

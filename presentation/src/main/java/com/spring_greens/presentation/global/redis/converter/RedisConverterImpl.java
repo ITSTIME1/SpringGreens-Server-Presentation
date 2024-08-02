@@ -1,14 +1,15 @@
-package com.spring_greens.presentation.product.converter;
+package com.spring_greens.presentation.global.redis.converter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.spring_greens.presentation.global.enums.Domain;
-import com.spring_greens.presentation.product.converter.ifs.RedisConverter;
+import com.spring_greens.presentation.global.redis.converter.ifs.RedisConverter;
 import com.spring_greens.presentation.product.dto.redis.DeserializedRedisProduct;
 import com.spring_greens.presentation.product.dto.redis.deserialized.DeserializedRedisProductInformation;
 import com.spring_greens.presentation.product.dto.redis.deserialized.DeserializedRedisShopInformation;
 import com.spring_greens.presentation.product.dto.redis.information.MapRedisProductInformation;
+import com.spring_greens.presentation.product.dto.redis.request.RedisProductRequest;
 import com.spring_greens.presentation.product.dto.redis.response.MapRedisProductResponse;
-import com.spring_greens.presentation.product.dto.redis.response.RedisProductResponse;
+import com.spring_greens.presentation.product.dto.redis.response.ifs.RedisProductResponse;
 import com.spring_greens.presentation.shop.dto.information.MapRedisShopInformation;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +17,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-/**
- * Implementation of RedisProductResponseConverter. <br>
- * this performs convert method and return RedisProduct type. <br>
- *
- * @author itsitme0809
- */
-@Component
-public class RedisProductConverterImpl implements RedisConverter {
 
-    private MapRedisProductResponse convertMapRedisProductResponse(DeserializedRedisProduct deserializedRedisProduct) {
+@Component
+public class RedisConverterImpl implements RedisConverter {
+    @Override
+    public RedisProductResponse createResponse(String domain, DeserializedRedisProduct deserializedRedisProduct) {
+        if(domain.equals(Domain.MAP.getDomain())) {
+            return this.convertMapRedisProductResponse(deserializedRedisProduct);
+        }
+        return null;
+    }
+
+    @Override
+    public RedisProductRequest createRequest(String domain, String mallName) {
+        return RedisProductRequest.builder().domain(domain).mallName(mallName).build();
+    }
+
+
+
+    @Override
+    public MapRedisProductResponse convertMapRedisProductResponse(DeserializedRedisProduct deserializedRedisProduct) {
         List<MapRedisShopInformation> mapRedisShopInformationList =
                 deserializedRedisProduct.getShop_list().stream().map(shopInfo ->
                         MapRedisShopInformation.builder()
@@ -56,18 +67,6 @@ public class RedisProductConverterImpl implements RedisConverter {
     }
 
     @Override
-    public DeserializedRedisShopInformation convertDeserializedRedisShopInformation(JsonNode jsonNode, List<DeserializedRedisProductInformation> deserializedRedisProductInformationList) {
-        return DeserializedRedisShopInformation
-                .builder()
-                .shop_id(jsonNode.get("shop_id").asLong())
-                .shop_name(jsonNode.get("shop_name").asText())
-                .shop_contact(jsonNode.get("shop_contact").asText())
-                .shop_address_details(jsonNode.get("shop_address_details").asText())
-                .product(deserializedRedisProductInformationList)
-                .build();
-    }
-
-    @Override
     public DeserializedRedisProductInformation convertDeserializedRedisProductInformation(JsonNode jsonNode){
         return DeserializedRedisProductInformation
                 .builder()
@@ -83,10 +82,16 @@ public class RedisProductConverterImpl implements RedisConverter {
     }
 
     @Override
-    public RedisProductResponse createResponse(String domain, DeserializedRedisProduct deserializedRedisProduct) {
-        if(domain.equals(Domain.MAP.getDomain())) {
-            return this.convertMapRedisProductResponse(deserializedRedisProduct);
-        }
-        return null;
+    public DeserializedRedisShopInformation convertDeserializedRedisShopInformation(JsonNode jsonNode, List<DeserializedRedisProductInformation> deserializedRedisProductInformationList) {
+        return DeserializedRedisShopInformation
+                .builder()
+                .shop_id(jsonNode.get("shop_id").asLong())
+                .shop_name(jsonNode.get("shop_name").asText())
+                .shop_contact(jsonNode.get("shop_contact").asText())
+                .shop_address_details(jsonNode.get("shop_address_details").asText())
+                .product(deserializedRedisProductInformationList)
+                .build();
     }
+
+
 }

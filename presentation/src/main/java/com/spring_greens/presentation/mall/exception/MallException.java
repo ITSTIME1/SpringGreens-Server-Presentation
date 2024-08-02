@@ -5,8 +5,8 @@ public abstract class MallException extends RuntimeException{
         super(message);
     }
     public static class MallEntityNotFoundException extends MallException {
-        public MallEntityNotFoundException() {
-            super("IllegalArgument Exception");
+        public MallEntityNotFoundException(String message) {
+            super(message);
         }
     }
 }

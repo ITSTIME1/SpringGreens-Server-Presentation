@@ -37,6 +37,7 @@ public class ApiResponse<T> {
                 ApiMessage.FAIL.getResponseMessage(),
                 data);
     }
+
     public static <T> ApiResponse<T> fail(@Nullable String message, @Nullable final T data) {
         if(message == null || message.isEmpty()) {
             message = ApiMessage.FAIL.getResponseMessage();

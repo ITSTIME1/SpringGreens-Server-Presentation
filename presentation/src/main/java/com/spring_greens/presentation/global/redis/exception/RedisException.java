@@ -1,7 +1,5 @@
 package com.spring_greens.presentation.global.redis.exception;
 
-import io.lettuce.core.models.role.RedisInstance;
-
 public abstract class RedisException extends RuntimeException{
     public RedisException(String message) {
         super(message);
@@ -21,5 +19,9 @@ public abstract class RedisException extends RuntimeException{
 
     public static class RedisIllegalArgumentException extends RedisException {
         public RedisIllegalArgumentException(String message) { super(message);}
+    }
+
+    public static class RedisIOException extends RedisException {
+        public RedisIOException(String message) {super(message);}
     }
 }

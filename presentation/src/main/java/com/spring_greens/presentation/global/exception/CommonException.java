@@ -11,8 +11,5 @@ public abstract class CommonException extends RuntimeException{
             super(message);
         }
 
-        public CustomNullPointerException() {
-            this("Error data is null");
-        }
     }
 }

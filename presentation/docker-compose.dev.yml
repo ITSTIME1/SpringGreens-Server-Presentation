@@ -56,6 +56,8 @@ services:
       - presentation-network
     volumes:
       - /home/ec2-user/redis.conf:/usr/local/etc/redis/redis.conf
+      - /home/ec2-user/dump.rdb:/data/dump.rdb
+    command: redis-server /usr/local/etc/redis/redis.conf
 
 # Setting presentation custom network
 # driver : bridge docker base network
